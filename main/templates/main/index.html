@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <!-- Вывод списка постов -->
+            {% for post in posts %}
+            <article>
+                <a href="{{ post.get_absolute_url }}">
+                    <h2 class="title-bg text-shadow-12">{{ post.title }}</h2></a>
+                    {% if post.img %}
+                    <img src="{{ post.img.url }}" width="770">
+                    {% endif %}
+                <p>{{ post.text|safe }}</p>
+                <a href="{{ post.get_absolute_url }}">
+                    <button type="button" class="btn btn-dark">Читать полностью</button></a>
+                <h4 class="text-right sigh">Автор поста: {{ post.author }}, {{ post.date }}</h4>
+            </article>
+            {% endfor %}
+            <!-- Пагинация -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-lg justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+                    {% endif %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <!-- Боковая панель с тегами -->
+        <div class="col-sm-3">
+            <aside>
+                <h5 class="title-bg">Популярные теги:</h5>
+                <ul class="post-category-list">
+                     {% for tag in tags %}
+                    <li>{{ tag }} ({{ tag.post__count}})</li>
+                    {% endfor %}
+                </ul>
+                <h5 class="title-bg">Самые комментируемые посты:</h5>
+                <ul class="post-category-list">
+                     {% for mcp in most_commented_posts %}
+                    <li>{{ mcp.text }}</li>
+                    {% endfor %}
+                </ul>
+            </aside>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

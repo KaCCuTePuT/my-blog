@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <h1>{{ tag.title }}:</h1>
+            {% for p in tag.post_set.all %}
+            <h3><a href="{% url 'main:post_detail' pk=p.pk %}"> {{ p.title }}</a></h3>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

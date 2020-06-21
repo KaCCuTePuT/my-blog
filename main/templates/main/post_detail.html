@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <article>
+                <h2 class="title-bg text-shadow-12">{{ post.title }}</h2>
+                {% if post.img %}
+                <img src="{{ post.img.url }}" width="770" alt="Тестовая картинка">
+                {% endif %}
+                <p> {{ post.text }}</p>
+                <h4 class="text-right sigh">Автор поста: {{ post.author }},
+                    {{ post.date }}, Теги: {% for t in tags %}{{ t.title }}{% endfor %}</h4>
+                <form action="{% url 'main:add_comment' post.id %}" method="post">
+                {% csrf_token %}
+                <h2>{{ user.username }}</h2>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Текст комментария</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="text"></textarea>
+                        <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </form>
+                {% if comments %}
+            </article>
+            <h3>Комментарии:</h3>
+            {% for comment in post.comment_set.all %}
+            <p><div class="badge badge-primary text-wrap comments" style="width: 6rem;">{{ comment.author }}:</div>
+            <div class="text-comment"> {{ comment.text }}</div></p>
+
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
